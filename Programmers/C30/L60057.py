@@ -1,22 +1,19 @@
 def solution(s):
-    answer = 1000
-    for n in range(1, len(s) + 1):
-        tmp = [s[i: i + n] for i in range(0, len(s), n)]
-        res = ""
+    answer = [len(s)]
+    for n in range(1, int(len(s)/2) + 1):
+        words = [s[i: i + n] for i in range(0, len(s), n)]
+        res = []
         count = 1
-        for x in range(len(tmp)):
-            if x < len(tmp) - 1 and tmp[x] == tmp[x + 1]:
+        
+        for curr, next in zip(words, words[1:] + ['']):
+            if curr == next:
                 count += 1
             else:
-                if count > 1:
-                    res += str(count)
-                res += tmp[x]
+                res.append([curr, count])
                 count = 1
         
-        if answer > len(res):
-            answer = len(res)
-
-    return answer
+        answer.append(sum((len(str(count)) if count > 1 else 0) + len(word) for word, count in res))
+    return min(answer)
 
 if __name__ == "__main__":
     print(solution("xababcdcdababcdcd"))
